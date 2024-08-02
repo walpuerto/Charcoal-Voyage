@@ -8,3 +8,4 @@ Type in your terminal the necessary commands to save them in time!
 Beat the time and destroy as many enemy spaceships before it is too late!
 
 A game by Winsor Jeremiah
+Circa 1722384000 seconds since the Epoch
