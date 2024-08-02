@@ -1,4 +1,4 @@
-# Charcoal-Voyage
+# Charcoal Voyage
 Stuck in space in a far away galaxy, how would you save your friends across the universe?
 If you had only 60 seconds, what would you do?
 
