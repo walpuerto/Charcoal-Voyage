@@ -139,7 +139,9 @@ def controlShip(sailorID, stage):
         elipses(3, "║Loading Cameras")
         gameStrings.spaceCam()
 
-        print(f"║  Enemy Location: {enemyLocationX}, {enemyLocationY}" +  (" "*(51 - len(str(enemyLocationX)) - len(str(enemyLocationY)))) +"║")
+        print("║                                                                       ║")
+        print(f"║ ┏────────────────{'─'*(2 + len(f'{enemyLocationX}') + len(f'{enemyLocationY}'))}")
+        print(f"║ │Enemy Location: {enemyLocationX}, {enemyLocationY}│" +  (" "*(50 - len(str(enemyLocationX)) - len(str(enemyLocationY)))) +"║")
         input()
         return
 
