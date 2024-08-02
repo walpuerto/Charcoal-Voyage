@@ -30,7 +30,7 @@ def askIPAddress(stage):
             return False
         
         elif ipAdress != "196.786.5.1" or stage == 1:
-            print("║Error: Chat Room unreachable...                                        ║", end="\r")
+            print("║Error: Chat Room unreachable... Please Retry                           ║", end="\r")
             print("\033[12C\033[2F")
             continue
 
@@ -96,6 +96,9 @@ def controlLoop():
 
         print("\033[43A")
 
+        if quadrant == "QUIT" or quadrant == "CLOSE":
+            break
+
         if quadrant == "" or not quadrant.isnumeric():
             continue
 
@@ -122,13 +125,13 @@ def chatLogs(sailorID, stage):
         print("║                                                                       ║")
         print("║Connection Successful!                                                 ║")
         time.sleep(1)
-        animateMessage(sailorID, 'Hi! Is anyone there?', 0.05, 0.1)
+        animateMessage(f"{sailorID}(You)", 'Hi! Is anyone there?', 0.05, 0.1)
         time.sleep(2)
-        animateMessage(sailorID, '...', 0.05, 0.1)
+        animateMessage(f"{sailorID}(You)", '...', 0.05, 0.1)
         time.sleep(1)
-        animateMessage(sailorID, 'HELLO! IS ANYONE ALIVE BACK THERE?!', 0.05, 0.07)
+        animateMessage(f"{sailorID}(You)", 'HELLO! IS ANYONE ALIVE BACK THERE?!', 0.05, 0.07)
         time.sleep(1)
-        animateMessage(sailorID, 'These idiots...', 0.1, 0.1)
+        animateMessage(f"{sailorID}(You)", 'These idiots...', 0.1, 0.1)
         time.sleep(2)
         elipses(6, "║Incoming message...")
         formatMessage("Matthew-Go", "HI! I HAVE RECIEVED YOUR MESSAGE! THANK GOD")
@@ -147,7 +150,7 @@ def chatLogs(sailorID, stage):
         elipses(3, "║Incoming message...")
         formatMessage("Matthew-Go", f'{sailorID} HELP ME PLEA-')
         time.sleep(2)
-        animateMessage(sailorID, 'I AM COMING!', 0.1, 0.3)
+        animateMessage(f"{sailorID}(You)", 'I AM COMING!', 0.1, 0.3)
         print("║                                                                       ║")
         print("║ Press any key to close chatlogs                                       ║")
         print("╚═══════════════════════════════════════════════════════════════════════╝")
@@ -155,7 +158,7 @@ def chatLogs(sailorID, stage):
     return True
 
 def controlShip(stage):
-    if stage == 0:
+    if stage == 0 and gamePlayerData.getTimesPlayed() < 2:
         gameStrings.controlsUnavailable()
         input()
         return
@@ -166,13 +169,17 @@ def controlShip(stage):
 
     if score > gamePlayerData.getHighScore():
         gamePlayerData.saveHighScore(score)
-
-    print(f"High Score: {gamePlayerData.getHighScore()}")
-    print(f"Your Score: {score}")
+    print()
+    print(f"High Score: {gamePlayerData.getHighScore()}          ")
+    print(f"Your Score: {score}                                  ")
+    print()
+    gamePlayerData.incrementTimesPlayed()
+    print("Press any key to continue")
+    input()
 
 def part1():
-    skipAnimation = True
-    sailorID = "T"
+    skipAnimation = False
+    sailorID = ""
     choice = ""
     stage = 0
     while True:
@@ -182,7 +189,7 @@ def part1():
         else: printByLine(gameStrings.logo, 0, "231")
 
         print("Charcoal Voyage - Version 0.1 | INDIEGO SyStems")
-        if not skipAnimation: sailorID = input("Enter Pilot Name: ")
+        if not skipAnimation: sailorID = input("Enter Pilot Name: ").strip()
         else: print(f"Enter Pilot Name: {sailorID}")
 
         print()
