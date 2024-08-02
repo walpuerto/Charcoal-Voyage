@@ -70,6 +70,23 @@ $$         $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                     `"Y8ba,  8b       d8  `"Y8ba,   
                     aa    ]8I "8a,   ,a8" aa    ]8I  
                     `"YbbdP"'  `"YbbdP"'  `"YbbdP"'''
+def controlsUnavailable():
+  print()
+  print("╔═══════════════════════════════════════════════════════════════════════╗")
+  print("║Charcoal Voyage - Spaceship Control | INDIEGO SyStems                  ║")
+  print("╠═══════════════════════════════════════════════════════════════════════╣")
+  print("║                                                                       ║")
+  print("║                              ╲╲   ╱╱                                  ║")
+  print("║                               ╲╲ ╱╱                                   ║")
+  print("║                                │╳│                                    ║")
+  print("║                               ╱╱ ╲╲                                   ║")
+  print("║                              ╱╱   ╲╲                                  ║")
+  print("║                                                                       ║")
+  print("║                       System Unavailable :(                           ║")
+  print("║                                                                       ║")
+  print("║ Press any key to close Spaceship Control                              ║")
+  print("╚═══════════════════════════════════════════════════════════════════════╝")
+
 def spaceCam():
   print("║  ┏─────────────────────────────────────────────────────────────────┓  ║")
   print("║  │                .                                            .   │  ║")

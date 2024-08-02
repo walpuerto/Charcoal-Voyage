@@ -2,7 +2,8 @@ import time
 import random
 import os
 
-import strings as gameStrings
+import modules.strings as gameStrings
+import modules.readFile as gamePlayerData
 os.system("")
 
 def printByLine(string, duration, color):
@@ -43,6 +44,65 @@ def animateMessage(sailorID, message, speedMin, speedMax):
         print(f"║{time.ctime().split(' ')[4]} | {sailorID}: {message[0:i]}{' '*(58-len(sailorID)-len(message[0:i]))}║", end="\r")
         time.sleep(random.uniform(speedMin, speedMax))
     print()
+
+def quadrantOf(x, y):
+    if x > 0 and y > 0: return 1
+    if x < 0 and y > 0: return 2
+    if x < 0 and y < 0: return 3
+    if x > 0 and y < 0: return 4
+    if x == 0 or y == 0: return 0
+
+def controlLoop():
+    timeBegin = time.time()
+    score = 0
+    while True and (60 - int(time.time()-timeBegin) > 0):
+        enemyLocationX = random.randint(-35, 35)
+        if enemyLocationX == 0: enemyLocationX + (lambda: 1 if random.randint(0,1) == 0 else -1)()
+
+        enemyLocationY = random.randint(-100, 100)
+        if enemyLocationY == 0: enemyLocationY + (lambda: 1 if random.randint(0,1) == 0 else -1)()
+
+        print()
+        print("╔═══════════════════════════════════════════════════════════════════════╗")
+        print("║Charcoal Voyage - Spaceship Control | INDIEGO SyStems                  ║")
+        print("╠═══════════════════════════════════════════════════════════════════════╣")
+        print("║ Instructions:                                                         ║")
+        print("║    1. Determine which quadrant the ENEMY from their coordinates       ║")
+        print("║    2. Type the QUADRANT NUMBER into the machine                       ║")
+        print("║    3. Press ENTER                                                     ║")
+        print("║                                                                       ║")
+        print("║ Destroy as many enemy space ships as you can in 60 seconds!           ║")
+        print("║ Good luck!                                                            ║")
+        print("╟───────────────────────────────────────────────────────────────────────╢")
+        print("║Control Panel:                                                         ║")
+        gameStrings.spaceCam()
+        s1 = f"║  ┏────────────────{'─'*(2 + len(f'{enemyLocationX}') + len(f'{enemyLocationY}'))}┓{' '*(7 - len(f'{enemyLocationX}') - len(f'{enemyLocationY}'))}┏───────{'─'*len(f'{score}')}┓"
+        s1 = f"{s1}{' ' * (72 - len(s1))}║"
+        print(s1)
+        
+        s2 = f"║  │Enemy Location: {enemyLocationX}, {enemyLocationY}│{' '*(7 - len(f'{enemyLocationX}') - len(f'{enemyLocationY}'))}│Score: {score}│  Time remaining: {60 - int(time.time()-timeBegin)}"
+        s2 = f"{s2}{' ' * (72 - len(s2))}║"
+        print(s2)
+
+        s3 = f"║  ┗────────────────{'─'*(2 + len(f'{enemyLocationX}') + len(f'{enemyLocationY}'))}┛{' '*(7 - len(f'{enemyLocationX}') - len(f'{enemyLocationY}'))}┗───────{'─'*len(f'{score}')}┛"
+        s3 = f"{s3}{' ' * (72 - len(s3))}║"
+        print(s3)
+
+        print("║  ┏─────────────────────────────────────────────────────────────────┓  ║")
+        print("║  │                                                                 │  ║")
+        print("║  ┗─────────────────────────────────────────────────────────────────┛  ║")
+        print("╚═══════════════════════════════════════════════════════════════════════╝")
+        quadrant = input("\033[3A\033[4CEnter quadrant to attack: ").strip()
+
+        print("\033[43A")
+
+        if quadrant == "" or not quadrant.isnumeric():
+            continue
+
+        if int(quadrant) == quadrantOf(enemyLocationX, enemyLocationY):
+            score += 1
+            continue
+    return score
 
 def chatLogs(sailorID, stage):
     print()
@@ -94,57 +154,21 @@ def chatLogs(sailorID, stage):
         input()
     return True
 
-def controlShip(sailorID, stage):
-    # if stage == 0:
-    #     print()
-    #     print("╔═══════════════════════════════════════════════════════════════════════╗")
-    #     print("║Charcoal Voyage - Spaceship Control | INDIEGO SyStems                  ║")
-    #     print("╠═══════════════════════════════════════════════════════════════════════╣")
-    #     print("║                                                                       ║")
-    #     print("║                              ╲╲   ╱╱                                  ║")
-    #     print("║                               ╲╲ ╱╱                                   ║")
-    #     print("║                                │╳│                                    ║")
-    #     print("║                               ╱╱ ╲╲                                   ║")
-    #     print("║                              ╱╱   ╲╲                                  ║")
-    #     print("║                                                                       ║")
-    #     print("║                       System Unavailable :(                           ║")
-    #     print("║                                                                       ║")
-    #     print("║ Press any key to close Spaceship Control                              ║")
-    #     print("╚═══════════════════════════════════════════════════════════════════════╝")
-    #     input()
-    #     return
-
-    scoreMax =  100
-    score = 0
-    while True and score <= scoreMax:
-        enemyLocationX = random.randint(-35, 35)
-        if enemyLocationX == 0: enemyLocationX + (lambda: 1 if random.randint(0,1) == 0 else -1)()
-
-        enemyLocationY = random.randint(-100, 100)
-        if enemyLocationY == 0: enemyLocationY + (lambda: 1 if random.randint(0,1) == 0 else -1)()
-
-        print()
-        print("╔═══════════════════════════════════════════════════════════════════════╗")
-        print("║Charcoal Voyage - Spaceship Control | INDIEGO SyStems                  ║")
-        print("╠═══════════════════════════════════════════════════════════════════════╣")
-        print("║ Instructions:                                                         ║")
-        print("║    1. Determine which quadrant the ENEMY from their coordinates       ║")
-        print("║    2. Type the QUADRANT NUMBER into the machine                       ║")
-        print("║    3. Press ENTER                                                     ║")
-        print("║                                                                       ║")
-        print("║ Destroy as many enemy space ships as you can in 60 seconds!           ║")
-        print("║ Good luck!                                                            ║")
-        print("╟───────────────────────────────────────────────────────────────────────╢")
-        print("║Control Panel:                                                         ║")
-        elipses(3, "║Loading Cameras")
-        gameStrings.spaceCam()
-
-        print("║                                                                       ║")
-        print(f"║ ┏────────────────{'─'*(2 + len(f'{enemyLocationX}') + len(f'{enemyLocationY}'))}")
-        print(f"║ │Enemy Location: {enemyLocationX}, {enemyLocationY}│" +  (" "*(50 - len(str(enemyLocationX)) - len(str(enemyLocationY)))) +"║")
+def controlShip(stage):
+    if stage == 0:
+        gameStrings.controlsUnavailable()
         input()
         return
 
+    score = controlLoop()
+    gameStrings.controlsUnavailable()
+    print("Your ship has been destroyed by an unknown enemy...")
+
+    if score > gamePlayerData.getHighScore():
+        gamePlayerData.saveHighScore(score)
+
+    print(f"High Score: {gamePlayerData.getHighScore()}")
+    print(f"Your Score: {score}")
 
 def part1():
     skipAnimation = True
@@ -189,7 +213,7 @@ def part1():
             continue
             
         if choice == "2":
-            controlShip(sailorID, stage)
+            controlShip(stage)
             skipAnimation = True
             continue
             
