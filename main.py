@@ -1,10 +1,14 @@
 import time
 import random
 import os
+import sys
+
+os.system("")
+os.chdir(sys._MEIPASS)
 
 import modules.strings as gameStrings
 import modules.readFile as gamePlayerData
-os.system("")
+
 
 def printByLine(string, duration, color):
     string = string.split('\n')
