@@ -182,6 +182,9 @@ def part1():
     sailorID = ""
     choice = ""
     stage = 0
+
+    if gamePlayerData.getTimesPlayed() > 1: stage = 1
+
     while True:
         print("\033[2J\033[H", end="\r")
 
