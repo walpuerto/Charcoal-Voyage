@@ -1,1 +1,1 @@
-pyinstaller main.py -F - n Charcoal Voyage -i icon.ico
+pyinstaller main.py -F - n"Charcoal Voyage" -i icon.ico
