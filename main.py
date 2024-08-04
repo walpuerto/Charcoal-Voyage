@@ -3,18 +3,19 @@ import random
 import os
 import sys
 
-# os.system("")
+os.system("")
 # os.chdir(sys._MEIPASS)
 
 import modules.strings as gameStrings
 import modules.readFile as gamePlayerData
 import modules.audio as gameAudio
 
-def printByLine(string, duration, color):
+def printByLine(string, duration, color, beep=False):
     string = string.split('\n')
     for chop in string:
-        time.sleep(duration)
+        if beep: gameAudio.playBeepLong()
         print(f"\033[38;5;{color}m {chop}\033[0m")
+        time.sleep(duration)
 
 def elipses(duration, message):
     for _ in range(duration):  
@@ -22,29 +23,44 @@ def elipses(duration, message):
         time.sleep(.5)
         print(f"{message}.. ", end='\r')
         time.sleep(.5)
+        gameAudio.playBeepHigh()
     print(" "*(len(message)+3), end='\r')
 
 def askIPAddress(stage):
     ipAdress = ""
-    while ipAdress != "CLOSE" or ipAdress != "196.786.5.1":
+    attempts = 0
+    while not ipAdress == "CLOSE" or not ipAdress == "196.786.5.1" and attempts <= 1000:
+        gameAudio.playBeepHigh()
         print("║Enter a IP to connect or CLOSE to go back:                             ║", end="\r")
         ipAdress = input("\033[45G").strip()
+        gameAudio.playBeep()
 
         if ipAdress == "CLOSE":
             return False
         
-        elif ipAdress != "196.786.5.1" or stage == 1:
+        elif not ipAdress == "196.786.5.1" or stage == 1:
             print("║Error: Chat Room unreachable... Please Retry                           ║", end="\r")
             print("\033[12C\033[2F")
             continue
 
         else: return True
      
+def askChoice():
+    choice = ""
+    attempts = 0
+    print()
+    while choice == "" or not choice.isnumeric() and attempts <= 1000:
+        choice = input("\033[1F\033[KEnter a number: ").strip()
+        gameAudio.playBeep()
+        attempts += 1
+    return choice
+
 def formatMessage(sailorID, message):
     print(f"║{time.ctime().split(' ')[4]} | {sailorID}: {message}"+" "*(58-len(sailorID)-len(message))+"║")
 
 def animateMessage(sailorID, message, speedMin, speedMax):
     for i in range(len(message)+1):
+        gameAudio.playBeepHigh()
         print(f"║{time.ctime().split(' ')[4]} | {sailorID}: {message[0:i]}{' '*(58-len(sailorID)-len(message[0:i]))}║", end="\r")
         time.sleep(random.uniform(speedMin, speedMax))
     print()
@@ -61,10 +77,10 @@ def controlLoop():
     score = 0
     while True and (60 - int(time.time()-timeBegin) > 0):
         enemyLocationX = random.randint(-35, 35)
-        if enemyLocationX == 0: enemyLocationX + (lambda: 1 if random.randint(0,1) == 0 else -1)()
+        if enemyLocationX == 0: 1
 
         enemyLocationY = random.randint(-100, 100)
-        if enemyLocationY == 0: enemyLocationY + (lambda: 1 if random.randint(0,1) == 0 else -1)()
+        if enemyLocationY == 0: -1
 
         print()
         print("╔═══════════════════════════════════════════════════════════════════════╗")
@@ -97,6 +113,7 @@ def controlLoop():
         print("║  ┗─────────────────────────────────────────────────────────────────┛  ║")
         print("╚═══════════════════════════════════════════════════════════════════════╝")
         quadrant = input("\033[3A\033[4CEnter quadrant to attack: ").strip()
+        gameAudio.playBeep()
 
         print("\033[43A")
 
@@ -138,20 +155,32 @@ def chatLogs(sailorID, stage):
         animateMessage(f"{sailorID}(You)", 'These idiots...', 0.1, 0.1)
         time.sleep(2)
         elipses(6, "║Incoming message...")
+        gameAudio.playBeepLong()
         formatMessage("Matthew-Go", "HI! I HAVE RECIEVED YOUR MESSAGE! THANK GOD")
         elipses(5, "║Incoming message...")
+        gameAudio.playBeepLong()
         formatMessage("Matthew-Go", 'THE LEGION IS ATTACKING OUR SHIP!!!')
         elipses(5, "║Incoming message...")
+        gameAudio.playBeepLong()
         formatMessage("Matthew-Go", 'PLEASE SEND HEPLP!!!')
         elipses(3, "║Incoming message...")
+        gameAudio.playBeepLong()
         formatMessage("Matthew-Go", 'I AND THE CREW ARE IN THE SAFE ROOM')
         elipses(2, "║Incoming message...")
         formatMessage("Matthew-Go", 'WE CAN HEAR THEM RAMMING OUR DOOR')
         elipses(2, "║Incoming message...")
+        gameAudio.playBeepLong()
+        gameAudio.stopLeadingMusic()
+        if gamePlayerData.getTimesPlayed () == 0:
+            gameAudio.playMatthew()
+        else:
+            gameAudio.playShower()
         formatMessage("Matthew-Go", 'I DONT THINK WE CAN LAST ANY LONGER')
         elipses(3, "║Incoming message...")
+        gameAudio.playBeepLong()
         formatMessage("Matthew-Go", 'OH SH- THEY ARE HERE')
         elipses(3, "║Incoming message...")
+        gameAudio.playBeepLong()
         formatMessage("Matthew-Go", f'{sailorID} HELP ME PLEA-')
         time.sleep(2)
         animateMessage(f"{sailorID}(You)", 'I AM COMING!', 0.1, 0.3)
@@ -159,27 +188,34 @@ def chatLogs(sailorID, stage):
         print("║ Press any key to close chatlogs                                       ║")
         print("╚═══════════════════════════════════════════════════════════════════════╝")
         input()
+        gameAudio.playBeep()
     return True
 
 def controlShip(stage):
-    if stage == 0 and gamePlayerData.getTimesPlayed() < 2:
+    if stage == 0 and gamePlayerData.getTimesPlayed() == 0:
         gameStrings.controlsUnavailable()
         input()
         return
 
+    if gamePlayerData.getTimesPlayed() > 0:
+        gameAudio.stopLeadingMusic()
+        gameAudio.playShower()
+
     score = controlLoop()
     gameStrings.controlsUnavailable()
-    print("Your ship has been destroyed by an unknown enemy...")
+    print("Your ship has been destroyed by an unknown enemy...                                  ")
 
     if score > gamePlayerData.getHighScore():
         gamePlayerData.saveHighScore(score)
-    print()
-    print(f"High Score: {gamePlayerData.getHighScore()}          ")
-    print(f"Your Score: {score}                                  ")
-    print()
+    print("                                                                                       ")
+    print(f"High Score: {gamePlayerData.getHighScore()}                                            ")
+    print(f"Your Score: {score}                                                                    ")
+    print("                                                                                       ")
+    print("Thank you very much for playing!!!                                                     ")
     gamePlayerData.incrementTimesPlayed()
-    print("Press any key to continue")
+    print("Press any key to continue                                                              ")
     input()
+    gameAudio.playBeep()
 
 def part1():
     skipAnimation = False
@@ -192,21 +228,30 @@ def part1():
     while True:
         print("\033[2J\033[H", end="\r")
 
-        if not skipAnimation: printByLine(gameStrings.logo, 0.1, "231")
-        else: printByLine(gameStrings.logo, 0, "231")
+        if not skipAnimation:
+            gameAudio.playMainMenu()
+            printByLine(gameStrings.logo, 0.1, "231", True)
+        else:
+            printByLine(gameStrings.logo, 0, "231")
 
         print("Charcoal Voyage - Version 0.1 | INDIEGO SyStems")
-        if not skipAnimation: sailorID = input("Enter Pilot Name: ").strip()
+        if not skipAnimation:
+            sailorID = input("Enter Pilot Name: ").strip()
+            gameAudio.playBeep()
         else: print(f"Enter Pilot Name: {sailorID}")
 
         print()
         if not skipAnimation: elipses(2, "Gathering Spaceship Info")
+        gameAudio.playBeepHigh()
         print("Settings: Normal, Hyper-Speed, Low-Fuel")
         if not skipAnimation: time.sleep(1)
+        gameAudio.playBeepHigh()
         print("Distance from Earth: 26000 ly")
         if not skipAnimation: time.sleep(1)
+        gameAudio.playBeepHigh()
         print("Remaining Fuel: 4200000 L")
         if not skipAnimation: time.sleep(3)
+        gameAudio.playBeepHigh()
         print()
         print(f"Welcome back to Hyper-Deep Space, {sailorID}!")
         print("What would you like to do?")
@@ -215,12 +260,9 @@ def part1():
         print("    3) Quit")
         print()
 
-        choice = input("Enter a number: ").strip()
+        choice = askChoice()
         
-        if choice == "" or not choice.isnumeric or int(choice) > 3:
-            choice = "1"
-
-        if choice == "1":
+        if choice == "1" or choice == "":
             chatLogs(sailorID, stage)
             skipAnimation = True
             stage = 1
@@ -240,7 +282,6 @@ def quit():
     exit()
 
 def game():
-    gameAudio.playMainMenu()
     part1()
 
 if __name__ == '__main__':
