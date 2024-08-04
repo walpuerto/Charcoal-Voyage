@@ -4,7 +4,7 @@ import os
 import sys
 
 os.system("")
-os.chdir(sys._MEIPASS)
+# os.chdir(sys._MEIPASS)
 
 import modules.strings as gameStrings
 import modules.readFile as gamePlayerData
@@ -28,16 +28,15 @@ def elipses(duration, message):
 
 def askIPAddress(stage):
     ipAddress = ""
-    while ipAddress == "" or not ipAddress == "CLOSE" or not ipAddress == "196.786.5.1":
+    while ipAddress == "" or ipAddress != "196.786.5.1" or ipAddress != "CLOSE":
         gameAudio.playBeepHigh()
-        print("║Enter a IP to connect or CLOSE to go back:                             ║", end="\r")
-        ipAddress = input("\033[45G").strip()
-        gameAudio.playBeep()
         
-        if not ipAddress == "196.786.5.1" or not stage == 1:
-            print("║Error: Chat Room unreachable... Please Retry                           ║", end="\r")
-            print("\033[12C\033[2F")
-            continue
+        ipAddress = input(f"║Enter a IP to connect or CLOSE to go back:                             ║\033[45G").strip()
+        gameAudio.playBeep()
+
+        if ipAddress == "196.786.5.1" and stage == 1: return True
+        if ipAddress == "CLOSE": return False
+        
     return True
      
 def askChoice():
