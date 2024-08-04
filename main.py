@@ -31,7 +31,7 @@ def askIPAddress(stage):
     while ipAddress == "" or ipAddress != "196.786.5.1" or ipAddress != "CLOSE":
         gameAudio.playBeepHigh()
         
-        ipAddress = input(f"║Enter a IP to connect or CLOSE to go back:                             ║\033[45G").strip()
+        ipAddress = input(f"\033[1F\033[K║Enter a IP to connect or CLOSE to go back:                             ║\033[45G").strip()
         gameAudio.playBeep()
 
         if ipAddress == "196.786.5.1" and stage == 1: return True
