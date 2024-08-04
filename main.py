@@ -3,12 +3,12 @@ import random
 import os
 import sys
 
-os.system("")
-os.chdir(sys._MEIPASS)
+# os.system("")
+# os.chdir(sys._MEIPASS)
 
 import modules.strings as gameStrings
 import modules.readFile as gamePlayerData
-
+import modules.audio as gameAudio
 
 def printByLine(string, duration, color):
     string = string.split('\n')
@@ -240,7 +240,8 @@ def quit():
     exit()
 
 def game():
-    part1Result = part1()
+    gameAudio.playMainMenu()
+    part1()
 
 if __name__ == '__main__':
     game()
