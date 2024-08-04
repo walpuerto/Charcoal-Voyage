@@ -4,7 +4,7 @@ import os
 import sys
 
 os.system("")
-# os.chdir(sys._MEIPASS)
+os.chdir(sys._MEIPASS)
 
 import modules.strings as gameStrings
 import modules.readFile as gamePlayerData
@@ -27,27 +27,25 @@ def elipses(duration, message):
     print(" "*(len(message)+3), end='\r')
 
 def askIPAddress(stage):
-    ipAdress = ""
-    attempts = 0
-    while not ipAdress == "CLOSE" or not ipAdress == "196.786.5.1" and attempts <= 1000:
+    ipAddress = ""
+    while ipAddress == "" or not ipAddress == "CLOSE" or not ipAddress == "196.786.5.1":
         gameAudio.playBeepHigh()
         print("║Enter a IP to connect or CLOSE to go back:                             ║", end="\r")
-        ipAdress = input("\033[45G").strip()
+        ipAddress = input("\033[45G").strip()
         gameAudio.playBeep()
         
-        if not ipAdress == "196.786.5.1" or stage == 2:
+        if not ipAddress == "196.786.5.1" or not stage == 1:
             print("║Error: Chat Room unreachable... Please Retry                           ║", end="\r")
             print("\033[12C\033[2F")
             continue
+    return True
      
 def askChoice():
     choice = ""
-    attempts = 0
     print()
-    while choice == "" or not choice.isnumeric() and attempts <= 1000:
+    while choice == "" or not choice.isnumeric():
         choice = input("\033[1F\033[KEnter a number: ").strip()
         gameAudio.playBeep()
-        attempts += 1
     return choice
 
 def formatMessage(sailorID, message):
