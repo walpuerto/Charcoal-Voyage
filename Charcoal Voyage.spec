@@ -9,12 +9,12 @@ a = Analysis(
     pathex=[],
     binaries=[('userData.cvoyage', '.')],
     datas=[
-        ('resources\beep high.wav', 'resources'),
-        ('resources\beep long.wav', 'resources'),
-        ('resources\beep short.wav', 'resources'),
-        ('resources\main menu.wav', 'resources'),
-        ('resources\meteor shower.wav', 'resources'),
-        ('resources\where is matthew.wav', 'resources')
+        ('resources\\beep high.wav', 'resources'),
+        ('resources\\beep long.wav', 'resources'),
+        ('resources\\beep short.wav', 'resources'),
+        ('resources\\main menu.wav', 'resources'),
+        ('resources\\meteor shower.wav', 'resources'),
+        ('resources\\where is matthew.wav', 'resources')
         ],
     hiddenimports=[],
     hookspath=[],

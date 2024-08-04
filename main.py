@@ -4,7 +4,7 @@ import os
 import sys
 
 os.system("")
-os.chdir(sys._MEIPASS)
+# os.chdir(sys._MEIPASS)
 
 import modules.strings as gameStrings
 import modules.readFile as gamePlayerData
@@ -34,16 +34,11 @@ def askIPAddress(stage):
         print("║Enter a IP to connect or CLOSE to go back:                             ║", end="\r")
         ipAdress = input("\033[45G").strip()
         gameAudio.playBeep()
-
-        if ipAdress == "CLOSE":
-            return False
         
-        elif not ipAdress == "196.786.5.1" or stage == 1:
+        if not ipAdress == "196.786.5.1" or stage == 2:
             print("║Error: Chat Room unreachable... Please Retry                           ║", end="\r")
             print("\033[12C\033[2F")
             continue
-
-        else: return True
      
 def askChoice():
     choice = ""
