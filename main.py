@@ -4,7 +4,7 @@ import os
 import sys
 
 os.system("")
-# os.chdir(sys._MEIPASS)
+os.chdir(sys._MEIPASS)
 
 import modules.strings as gameStrings
 import modules.readFile as gamePlayerData
